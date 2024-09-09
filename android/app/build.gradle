@@ -78,6 +78,17 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.intevirw"
+    flavorDimensions "default"
+
+    productFlavors {
+        dev {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId 'com.intevirw'
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "com.intevirw"
+        }
+    }
+
     defaultConfig {
         applicationId "com.intevirw"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -100,6 +111,12 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
+            // debuggable true
+            // // signingConfig signingConfigs.release
+            // minifyEnabled true
+            // // Enable resource shrinking
+            // shrinkResources true
+
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -117,3 +134,5 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
