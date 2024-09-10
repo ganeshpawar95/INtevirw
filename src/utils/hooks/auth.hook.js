@@ -1,36 +1,71 @@
 import {useState} from 'react';
 import {GlobalEx} from '../index';
 
+import {loginAuth, RegisterAuth} from '../../store/slices/auth';
+
 export default function useLoginHook() {
   const navigation = GlobalEx.useNavigation();
+  const dispatch = GlobalEx.useDispatch();
   const route = GlobalEx.useRoute();
   const [show_alert, setShowAlert] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
+  const {loading, user} = GlobalEx.useSelector(state => state.auth);
   const {
     control,
     handleSubmit,
+    reset,
     formState: {errors},
-  } = GlobalEx.useForm({});
+  } = GlobalEx.useForm({phone: '', password: '', name: ''});
 
   const onSubmitLogin = data => {
-    // setShowAlert(!show_alert);
-    navigation.navigate('dashboard');
+    dispatch(loginAuth(data))
+      .unwrap()
+      .then(resp => {
+        console.log('ers', resp);
+        if (resp.status == false) {
+          GlobalEx.Toast.show({
+            type: 'error',
+            text1: resp.message,
+          });
+          return false;
+        } else {
+          reset();
+          GlobalEx.Toast.show({
+            type: 'success',
+            text1: resp.message,
+          });
+          navigation.navigate('home');
+        }
+      })
+      .catch(e => {
+        GlobalEx.Toast.show({
+          type: 'error',
+          text1: e.message,
+        });
+      });
   };
 
-  const onSubmitForgotPassword = data => {
-    console.log('data', data);
-    // navigation.navigate('enter-otp-password');
+  const onSubmitRegistration = data => {
+    dispatch(RegisterAuth(data))
+      .unwrap()
+      .then(resp => {
+        if (resp.status == true) {
+          reset();
+          GlobalEx.Toast.show({
+            type: 'success',
+            text1: resp.message,
+          });
+          navigation.navigate('login');
+        }
+      })
+      .catch(e => {
+        GlobalEx.Toast.show({
+          type: 'error',
+          text1: e.message,
+        });
+      });
   };
-
-  const onSubmitVerifyOtp = data => {
-    // navigation.navigate('reset-password');
-  };
-
-  const onSubmitResetPassword = data => {
-    // navigation.navigate('login');
-  };
-
   return {
     navigation,
     route,
@@ -42,8 +77,9 @@ export default function useLoginHook() {
     show_alert,
     secureTextEntry,
     setSecureTextEntry,
-    onSubmitForgotPassword,
-    onSubmitVerifyOtp,
-    onSubmitResetPassword,
+    onSubmitRegistration,
+    loading,
+    user,
+    reset,
   };
 }

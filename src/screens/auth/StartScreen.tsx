@@ -1,8 +1,9 @@
 import {GlobalEx, Icons} from '../../utils';
 import {HeadingCp, ButtonCp, HaveAccountCP} from '../../components';
 export default function StartScreen() {
+  const nav = GlobalEx.useNavigation();
   return (
-    <GlobalEx.SafeAreaView className="flex-1 justify-center items-center">
+    <GlobalEx.SafeAreaView className="flex-1">
       <GlobalEx.ImageBackground
         source={Icons.Start_bg}
         resizeMode="stretch"
@@ -16,18 +17,25 @@ export default function StartScreen() {
             justifyContent: 'center',
           }}>
           <GlobalEx.View className="flex-1 justify-end mt-10">
-            <Icons.Logo />
+            <GlobalEx.View className="justify-center items-center">
+              <Icons.Logo />
+            </GlobalEx.View>
             <HeadingCp
               title="Sparkle & Shine  Transform Your Drive with Every Wash!"
               main_class={'my-3'}
             />
           </GlobalEx.View>
           <GlobalEx.View className="flex-1 justify-end  mb-5">
-            <ButtonCp title="Let’s Start" main_class={'my-1'} />
+            <ButtonCp
+              title="Let’s Start"
+              main_class={'my-1'}
+              OnPress={() => nav.navigate('login')}
+            />
             <HaveAccountCP
               title="Already  have an account?"
               sub_title="Sign in"
               main_class="bottom-0"
+              onPress={() => nav.navigate('login')}
             />
           </GlobalEx.View>
         </GlobalEx.ScrollView>

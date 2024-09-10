@@ -4,13 +4,14 @@ export default function HaveAccountCP({
   sub_title = '',
   main_class = '',
   heading_class = '',
+  onPress = () => {},
 }) {
   return (
     <GlobalEx.Box className={`flex-row justify-center my-5 ${main_class}`}>
       <GlobalEx.Heading className="text-gray-100  text-poppins font-medium text-lg">
         {title}
       </GlobalEx.Heading>
-      <GlobalEx.TouchableOpacity className="mx-4">
+      <GlobalEx.TouchableOpacity className="mx-4" onPress={onPress}>
         <GlobalEx.Heading
           className={`text-black text-[#000000]  text-lg font-bold  ${heading_class}`}>
           {sub_title}

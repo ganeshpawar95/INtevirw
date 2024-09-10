@@ -4,6 +4,7 @@ import {
   ButtonCp,
   HaveAccountCP,
   FormController,
+  IconButtonCp,
 } from '../../components';
 import {useLoginHook} from '../../utils/hooks';
 import fields from '../../utils/helpers/fields';
@@ -14,8 +15,8 @@ export default function LoginScreen() {
     control,
     onSubmitLogin,
     handleSubmit,
-    errors,
-    show_alert,
+    loading,
+    reset,
   } = useLoginHook();
 
   return (
@@ -70,24 +71,35 @@ export default function LoginScreen() {
             <ButtonCp
               title="Sign In"
               main_class={'my-4'}
+              loading={loading}
               OnPress={handleSubmit(onSubmitLogin)}
             />
             <GlobalEx.View className=" flex-row justify-center">
-              <GlobalEx.Text className="text-[#A3CFFF] text-center">
+              <GlobalEx.Text className="text-[#A3CFFF]">
                 __________________
               </GlobalEx.Text>
-              <GlobalEx.Text className="text-center self-center content-center">
+              <GlobalEx.Text className="self-center items-center mt-1">
                 or
               </GlobalEx.Text>
-              <GlobalEx.Text className="text-[#A3CFFF] text-center">
+              <GlobalEx.Text className="text-[#A3CFFF]">
                 __________________
               </GlobalEx.Text>
+            </GlobalEx.View>
+
+            <GlobalEx.View className=" flex-row justify-center">
+              <IconButtonCp Icons={<Icons.Google />} mainClass="my-4 mx-2" />
+              <IconButtonCp Icons={<Icons.Apple />} mainClass="my-4 mx-2" />
             </GlobalEx.View>
 
             <HaveAccountCP
               title="Don’t have an account?"
               sub_title="Sign Up"
               main_class="bottom-0"
+              heading_class="underline"
+              onPress={() => {
+                reset();
+                navigation.navigate('register');
+              }}
             />
             <HeadingCp
               title="By login or sign up, you agree to our terms of use and privacy policy"

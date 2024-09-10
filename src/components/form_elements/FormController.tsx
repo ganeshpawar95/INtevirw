@@ -1,20 +1,18 @@
 import {GlobalEx, Icons as Icon} from '../../utils/index';
 import TextInputBox from './TextInputBox';
 
+import CheckBoxCp from './CheckBox';
+
 export default function FormController({
   label = null,
   name = '',
-  Icons = null,
   placeholder = '',
+  sub_placeholder = null,
   secureTextEntry = false,
-  onClickIcons = () => {},
   keyboardTypes = 'default',
   control,
   rules = {},
   form_input_type = 'text',
-  options = [],
-  selectClass = '',
-  InputClass = '',
   formClass = '',
   left_icon = null,
   right_icon = null,
@@ -27,7 +25,9 @@ export default function FormController({
       render={({field: {onChange, onBlur, value}, fieldState: {error}}) => (
         <GlobalEx.FormControl
           isInvalid={error == undefined ? false : true}
-          className={formClass.length != 0 ? `border-1 mb-3 ${formClass}` : ''}>
+          className={
+            formClass.length != 0 ? `border-1 mb-3 ${formClass}` : ' mt-2'
+          }>
           {label && (
             <GlobalEx.FormControl.Label className="font-poppins font-normal text-[#000000] mb-2">
               {label}
@@ -36,13 +36,22 @@ export default function FormController({
           {form_input_type == 'text' && (
             <TextInputBox
               value={value}
+              name={name}
               onChange={onChange}
               onBlur={onBlur}
               placeholder={placeholder}
               keyboardTypes={keyboardTypes}
-              secureTextEntry={secureTextEntry}
               left_icon={left_icon}
               right_icon={right_icon}
+              error={error}
+            />
+          )}
+          {form_input_type == 'checkbox' && (
+            <CheckBoxCp
+              label={placeholder}
+              sub_label={sub_placeholder}
+              value={value}
+              onChange={onChange}
             />
           )}
           {error && (
